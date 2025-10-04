@@ -1,16 +1,30 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class death : MonoBehaviour
+public class Death : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float fallLimit = -5f; // Negative makes more sense for falling
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Reload if player falls below the set limit
+        if (transform.position.y < fallLimit)
+        {
+            ReloadLevel();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Reload if player touches a hazard
+        if (other.CompareTag("Hazard"))
+        {
+            ReloadLevel();
+        }
+    }
+
+    void ReloadLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
